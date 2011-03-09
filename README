@@ -1,1 +1,37 @@
 this is library for 24LC16B chip for arduino
+
+Sample sketch:
+
+#include <Wire.h>
+#include <c24LC16B.h>
+
+
+c24LC16B memory = c24LC16B();
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("start");
+  
+  char data[] = "abrakadabra with code for arduino";
+  memory.write(0, (byte *)data, sizeof(data));
+}
+
+void loop(){
+   int addr=0; //first address
+   byte b = memory.read_byte(addr); // access the first address from the memory
+
+   while ((b != 0) && (addr < 100)) 
+   {
+     Serial.print(addr);
+     Serial.print(" ");
+     Serial.print((char)b); //print content to serial port
+     Serial.print(" ");
+     Serial.println(b, HEX); //print content to serial port
+     addr++; //increase address
+     b = memory.read_byte(addr); //access an address from the memory
+   }
+   //Serial.println(" ");
+   delay(12000);
+
+}
